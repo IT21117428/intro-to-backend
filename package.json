@@ -1,0 +1,20 @@
+{
+  "name": "intro-to-backend",
+  "version": "1.0.0",
+  "description": "intro to backend",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IT21117428/intro-to-backend.git"
+  },
+  "author": "Kaveeja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IT21117428/intro-to-backend/issues"
+  },
+  "homepage": "https://github.com/IT21117428/intro-to-backend#readme"
+}
