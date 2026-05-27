@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/IT21117428/intro-to-backend/issues"
   },
-  "homepage": "https://github.com/IT21117428/intro-to-backend#readme"
+  "homepage": "https://github.com/IT21117428/intro-to-backend#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
