@@ -1,6 +1,12 @@
 import express from 'express';
+import cors from 'cors';
 
 const app = express(); // create an express app
+
+app.use(cors({
+    origin: '*', // For simplicity during learning, allow all origins
+    credentials: true,
+}));
 
 app.use(express.json());
 
