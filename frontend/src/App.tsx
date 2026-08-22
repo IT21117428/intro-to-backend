@@ -10,7 +10,8 @@ function App() {
   // Simple way to check if user is logged in: Check if we saved a user in localStorage
   useEffect(() => {
     const user = localStorage.getItem('user');
-    if (user) {
+    const token = localStorage.getItem('token');
+    if (user && token) {
       setIsLoggedIn(true);
     }
   }, []);

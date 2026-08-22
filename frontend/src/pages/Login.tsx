@@ -24,8 +24,9 @@ function Login({ setIsLoggedIn }: LoginProps) {
       const data = await response.json();
 
       if (response.ok) {
-        // Save user data to localStorage so we know they are logged in
-        localStorage.setItem('user', JSON.stringify(data.user || data.data.user)); 
+        // Save user data and token to localStorage
+        localStorage.setItem('user', JSON.stringify(data.user || data.data?.user)); 
+        localStorage.setItem('token', data.token || data.data?.token);
         setIsLoggedIn(true);
         navigate('/');
       } else {

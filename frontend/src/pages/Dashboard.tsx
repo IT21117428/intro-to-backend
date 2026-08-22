@@ -20,6 +20,9 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
   const [age, setAge] = useState<number | ''>('');
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
 
+  // Get token for auth
+  const token = localStorage.getItem('token');
+
   // Fetch posts when component loads
   useEffect(() => {
     fetchPosts();
@@ -27,7 +30,11 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/v1/posts/getPosts');
+      const response = await fetch('http://localhost:4000/api/v1/posts/getPosts', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       if (response.ok) {
         setPosts(data.data || data);
@@ -37,7 +44,7 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Prepare data
@@ -48,7 +55,10 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
       try {
         const response = await fetch(`http://localhost:4000/api/v1/posts/update/${editingPostId}`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(postData),
         });
 
@@ -66,7 +76,10 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
       try {
         const response = await fetch('http://localhost:4000/api/v1/posts/create', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(postData),
         });
 
@@ -93,6 +106,9 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
     try {
       const response = await fetch(`http://localhost:4000/api/v1/posts/delete/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       if (response.ok) {
         fetchPosts(); // Refresh list after delete
@@ -112,9 +128,15 @@ function Dashboard({ setIsLoggedIn }: DashboardProps) {
 
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:4000/api/v1/users/logout', { method: 'POST' });
+      await fetch('http://localhost:4000/api/v1/users/logout', { 
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
     } catch (err) {}
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
   };
 
