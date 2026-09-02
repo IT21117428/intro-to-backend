@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model.js";
+import { userRepository } from "../repositories/user.repository.js";
 
 const registerUser = async (userData) => {
     const { username, email, password } = userData;
@@ -8,12 +8,12 @@ const registerUser = async (userData) => {
         throw { status: 400, message: "All fields are important!" };
     }
 
-    const existing = await User.findOne({ email: email.toLowerCase() });
+    const existing = await userRepository.findByEmail(email.toLowerCase());
     if (existing) {
         throw { status: 400, message: "User already exists!" };
     }
 
-    const user = await User.create({
+    const user = await userRepository.create({
         username,
         email: email.toLowerCase(),
         password,
@@ -29,7 +29,7 @@ const loginUser = async (loginData) => {
          throw { status: 400, message: "Email and password are required" };
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await userRepository.findByEmail(email.toLowerCase());
     if (!user) {
         throw { status: 400, message: "User not found" };
     }
@@ -53,7 +53,7 @@ const loginUser = async (loginData) => {
 };
 
 const logoutUser = async (email) => {
-    const user = await User.findOne({ email });
+    const user = await userRepository.findByEmail(email);
     if (!user) {
         throw { status: 404, message: "User not found" };
     }

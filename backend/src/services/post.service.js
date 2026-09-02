@@ -1,4 +1,4 @@
-import { Post } from "../models/post.model.js";
+import { postRepository } from "../repositories/post.repository.js";
 
 const createPost = async (postData) => {
     const { name, description, age } = postData;
@@ -7,12 +7,12 @@ const createPost = async (postData) => {
         throw { status: 400, message: "All fields are required" };
     }
 
-    const post = await Post.create({ name, description, age });
+    const post = await postRepository.create({ name, description, age });
     return post;
 };
 
 const getPosts = async () => {
-    const posts = await Post.find();
+    const posts = await postRepository.findAll();
     return posts;
 };
 
@@ -21,7 +21,7 @@ const updatePost = async (id, updateData) => {
         throw { status: 400, message: "No data provided for update" };
     }
 
-    const post = await Post.findByIdAndUpdate(id, updateData, { new: true });
+    const post = await postRepository.updateById(id, updateData);
     if (!post) {
         throw { status: 404, message: "Post not found" };
     }
@@ -30,7 +30,7 @@ const updatePost = async (id, updateData) => {
 };
 
 const deletePost = async (id) => {
-    const deleted = await Post.findByIdAndDelete(id);
+    const deleted = await postRepository.deleteById(id);
     if (!deleted) {
         throw { status: 404, message: "Post not found" };
     }
